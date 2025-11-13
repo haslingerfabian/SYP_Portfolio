@@ -2,32 +2,32 @@
 import "../styles/projects.css";
 import Layout from "../layouts/Layout.astro";
 import Hero from "../components/commons/hero/hero.astro";
-import ProjectCard from "../components/project/proyectCard.astro";
+import ProjectCard from "../components/project/projectCard.astro";
 import Banner from "../components/commons/banners/banner.astro";
-import { proyectos } from "../data/projectData.js";
+import { fetchGitHubProjects } from "../data/githubProjects.js";
+
+const projects = await fetchGitHubProjects();
 ---
 
-<Layout title="Projects" description="Projects">
+<Layout title="Projects" description="My public GitHub projects">
   <Hero titulo="Projects" />
 
+  <!-- 1 Card pro Reihe: flex-col -->
   <div
     id="projects-container"
-    class="4xl:px-96 flex flex-wrap justify-center gap-5 px-3 pt-10 xl:px-32 2xl:px-60"
+    class="flex flex-col gap-5 px-3 pt-10 xl:px-32 2xl:px-60"
   >
     {
-      proyectos.map((proyecto) => (
+      projects.map((project) => (
         <ProjectCard
-          titulo={proyecto.titulo}
-          descripcion={proyecto.descripcion}
-          imagen={proyecto.imagen}
-          tecnologias={proyecto.tecnologias}
-          demo={proyecto.demo}
-          codigo={proyecto.codigo}
-          categoria={proyecto.categoria}
+          title={project.title}
+          description={project.description}
+          image={project.image}
+          technologies={project.technologies}
+          code={project.code}
+          isCollab={project.isCollab}
         />
       ))
     }
   </div>
-
-  <Banner />
 </Layout>

@@ -1,0 +1,87 @@
+---
+import GithubIcon from "../../assets/img-projects/github.png";
+
+const {
+  title,
+  description,
+  image,
+  technologies = [],
+  code,
+  isCollab = false,
+} = Astro.props;
+
+// fixed-color badges
+const TECH_STYLES: Record<string, string> = {
+  Astro: "border-purple-400/60 text-purple-300",
+  JavaScript: "border-yellow-400/60 text-yellow-300",
+  TypeScript: "border-blue-400/60 text-blue-300",
+  CSS: "border-green-400/60 text-green-300",
+  "C#": "border-indigo-400/60 text-indigo-300",
+  Python: "border-emerald-400/60 text-emerald-300",
+  Java: "border-orange-400/60 text-orange-300",
+};
+
+// return matched color OR default white
+function getTechClasses(tech: string): string {
+  return TECH_STYLES[tech] ?? "border-white/40 text-white/80";
+}
+
+---
+
+<div class="w-full rounded-lg bg-gray-900 p-4 shadow-lg drop-shadow-[4px_4px_0_#7836cf] flex gap-6">
+  <!-- Left: Image -->
+  <div class="w-[40%] h-48 flex-shrink-0">
+    <img
+      src={image || GithubIcon.src}
+      alt={title}
+      class="w-full h-full object-cover rounded-md"
+      loading="lazy"
+      onerror={`this.onerror=null;this.src='${GithubIcon.src}';`}
+    />
+  </div>
+
+  <!-- Right: Text -->
+  <div class="flex flex-col justify-between flex-grow">
+    <div>
+      <h3 class="text-xl font-semibold text-white mt-2">{title}</h3>
+
+      <p class="text-gray-300 text-sm mt-1 mb-3">
+        {description}
+      </p>
+
+      <div class="flex flex-wrap gap-2">
+      {
+        technologies.length > 0
+          ? technologies.map((tech) => (
+              <span class={`rounded-full border px-3 py-1 text-xs ${getTechClasses(tech)}`}>
+                {tech}
+              </span>
+            ))
+          : (
+            <span class="rounded-full border border-slate-500/60 px-3 py-1 text-xs text-slate-300">
+              Unknown
+            </span>
+          )
+      }
+
+      {isCollab && (
+        <span class="rounded-full border border-orange-500/60 px-3 py-1 text-xs text-orange-300">
+          Collab
+        </span>
+      )}
+    </div>
+
+    </div>
+
+    <div class="flex justify-end mt-4">
+      <a
+        href={code}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-[#69c7c7] font-bold text-sm"
+      >
+        GitHub
+      </a>
+    </div>
+  </div>
+</div>
