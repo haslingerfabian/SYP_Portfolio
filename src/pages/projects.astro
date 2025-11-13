@@ -1,0 +1,33 @@
+---
+import "../styles/projects.css";
+import Layout from "../layouts/Layout.astro";
+import Hero from "../components/commons/hero/hero.astro";
+import ProjectCard from "../components/project/proyectCard.astro";
+import Banner from "../components/commons/banners/banner.astro";
+import { proyectos } from "../data/projectData.js";
+---
+
+<Layout title="Projects" description="Projects">
+  <Hero titulo="Projects" />
+
+  <div
+    id="projects-container"
+    class="4xl:px-96 flex flex-wrap justify-center gap-5 px-3 pt-10 xl:px-32 2xl:px-60"
+  >
+    {
+      proyectos.map((proyecto) => (
+        <ProjectCard
+          titulo={proyecto.titulo}
+          descripcion={proyecto.descripcion}
+          imagen={proyecto.imagen}
+          tecnologias={proyecto.tecnologias}
+          demo={proyecto.demo}
+          codigo={proyecto.codigo}
+          categoria={proyecto.categoria}
+        />
+      ))
+    }
+  </div>
+
+  <Banner />
+</Layout>
