@@ -1,15 +1,30 @@
-const COLLAB_PROJECTS = [
+type Project = {
+  title: string;
+  description: string;
+  image?: string;
+  technologies: string[];
+  code: string;
+  isCollab: boolean;
+};
+
+
+const COLLAB_PROJECTS: Project[] = [
   {
-    title: "SYP_MBOT_G1",
+    title: "SYP4_MBOT_G1",
     description: "Robotik-Projekt mit MBot im Team.",
-    image: "/images/projects/SYP_MBOT_G1.png",
+    image: "/img-projects/SYP4_MBOT_G1.jpg", 
     technologies: ["C#", "Robotik"],
-    code: "https://github.com/jonasaberger/SYP_MBOT_G1",
-    isCollab: true
+    code: "https://github.com/jonasaberger/SYP4_MBOT_G1",
+    isCollab: true,
   },
 ];
 
-async function fetchLanguages(repoUrl, headers) {
+const COLLAB_TITLES = new Set(COLLAB_PROJECTS.map((p) => p.title));
+
+async function fetchLanguages(
+  repoUrl: string,
+  headers: Record<string, string>
+): Promise<string[]> {
   try {
     const res = await fetch(`${repoUrl}/languages`, { headers });
     if (!res.ok) return [];
@@ -20,14 +35,18 @@ async function fetchLanguages(repoUrl, headers) {
   }
 }
 
-export async function fetchGitHubProjects() {
+export async function fetchGitHubProjects(): Promise<Project[]> {
   const username = import.meta.env.GITHUB_USERNAME;
   const token = import.meta.env.GITHUB_TOKEN;
 
-  const headers = { Accept: "application/vnd.github+json" };
-  if (token) headers.Authorization = `Bearer ${token}`;
+  const headers: Record<string, string> = {
+    Accept: "application/vnd.github+json",
+  };
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
 
-  const projects = [];
+  const projects: Project[] = [];
   const perPage = 100;
   let page = 1;
 
@@ -45,17 +64,24 @@ export async function fetchGitHubProjects() {
     for (const repo of data) {
       if (repo.private) continue;
 
+      if (COLLAB_TITLES.has(repo.name)) continue;
+
       const technologies = await fetchLanguages(repo.url, headers);
       if (!technologies.length && repo.language) {
         technologies.push(repo.language);
       }
 
+      // Bildpfad für normale Repos:
+      // -> Datei muss in public/img-projects/<RepoName>.jpg liegen
+      const image = `/img-projects/${repo.name}.jpg`;
+
       projects.push({
         title: repo.name,
         description: repo.description ?? "No description provided.",
-        image: `/images/projects/${repo.name}.png`,
+        image,
         technologies,
         code: repo.html_url,
+        isCollab: false,
       });
     }
 
@@ -64,10 +90,10 @@ export async function fetchGitHubProjects() {
     if (page > 5) break;
   }
 
+  // Collab-Projekte anhängen
   for (const c of COLLAB_PROJECTS) {
     projects.push(c);
   }
-
 
   return projects;
 }
