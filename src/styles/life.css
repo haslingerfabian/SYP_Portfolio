@@ -1,0 +1,216 @@
+/* SECTION */
+
+.life-section {
+  position: relative;
+}
+
+/* HEADING */
+
+.life-heading {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+}
+
+.title-main {
+  font-size: 2.4rem;
+  font-weight: 700;
+  text-shadow: 2px 2px 0 #7836cf;
+}
+
+.title-line {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .life-heading {
+    justify-content: flex-start;
+  }
+  .title-line {
+    display: block;
+    height: 6px;
+    flex-grow: 1;
+    border-radius: 8px;
+    background: #7836cf;
+    box-shadow: 2px 2px 0 #0debd8;
+  }
+}
+
+/* TIMELINE CONTAINER */
+
+.life-timeline {
+  margin-top: 60px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+}
+
+/* MIDDLE LINE */
+
+.life-timeline::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 5px;
+  border-radius: 999px;
+  background: linear-gradient(#7836cf, #0debd8);
+  box-shadow: 0 0 25px rgba(120, 54, 207, 0.6);
+}
+
+/* ROW */
+
+.life-row {
+  display: grid;
+  grid-template-columns: 1fr 80px 1fr;
+  align-items: center;
+  gap: 32px;
+}
+
+.life-col {
+  display: flex;
+  justify-content: center;
+}
+
+/* DOT */
+
+.life-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.life-dot {
+  width: 22px;
+  height: 22px;
+  background: #7836cf;
+  border-radius: 999px;
+  border: 2px solid #fff;
+  box-shadow: 0 0 8px rgba(120, 54, 207, 0.6);
+}
+
+/* BLOCK WITH YEAR + TEXT */
+
+.life-block {
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.life-period {
+  font-size: 0.85rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #d1d1d6;
+  opacity: 0.9;
+}
+
+.life-row[data-side="left"] .life-block {
+  text-align: right;
+  align-items: flex-end;
+}
+
+.life-row[data-side="right"] .life-block {
+  text-align: left;
+  align-items: flex-start;
+}
+
+/* CARD */
+
+.life-card {
+  background: rgba(15, 15, 23, 0.92);
+  border-radius: 18px;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.6);
+}
+
+.life-card-title {
+  color: #fff;
+  font-size: 1.2rem;
+  margin-bottom: 4px;
+}
+
+.life-card-text {
+  color: #d4d4d8;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* IMAGE */
+
+.life-image {
+  max-width: 420px;
+  max-height: 300px;
+  overflow: hidden;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(10, 10, 18, 0.9);
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.7);
+}
+
+.life-image img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* DOWNLOAD BUTTON */
+
+.life-download {
+  margin-top: 70px;
+  display: flex;
+  justify-content: center;
+}
+
+.life-download-btn {
+  background: linear-gradient(90deg, #7836cf, #0debd8);
+  padding: 14px 36px;
+  border-radius: 999px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  text-decoration: none;
+  box-shadow: 0 0 18px rgba(120, 54, 207, 0.7);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.life-download-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 24px rgba(120, 54, 207, 0.9);
+}
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+  .life-timeline::before {
+    left: 28px;
+    width: 4px;
+  }
+
+  .life-row {
+    grid-template-columns: 1fr;
+    padding-left: 48px;
+    gap: 20px;
+  }
+
+  .life-center {
+    position: absolute;
+    left: 18px;
+  }
+
+  .life-block {
+    align-items: flex-start !important;
+    text-align: left !important;
+  }
+
+  .life-image {
+    max-width: 100%;
+  }
+}

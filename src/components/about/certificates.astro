@@ -1,0 +1,77 @@
+---
+const badges = [
+  {
+    id: "314d1b46-1a86-4077-a588-24d3c45044f3",
+    title: "Introduction to IoT",
+    issuer: "Cisco Networking Academy",
+    issued: "13. November 2025",
+    description:
+      "Grundlagen des Internet of Things: Sensoren, Aktoren, Vernetzung und typische Einsatzszenarien. Fokus auf Verständnis der Architektur und sicherer Anbindung von Geräten.",
+  },
+  {
+    id: "315fd1a3-23f5-4706-ba6b-700bde11b5ea",
+    title: "Introduction to Cybersecurity",
+    issuer: "Cisco Networking Academy",
+    issued: "28. November 2024",
+    description:
+      "Einstieg in IT-Security: Bedrohungsmodelle, Angriffsarten, grundlegende Schutzmaßnahmen, sichere Passwörter und Netzwerksicherheit. Stärkt vor allem das Sicherheitsbewusstsein.",
+  },
+];
+---
+
+<section class="site-container mx-auto mt-20 max-w-6xl px-4">
+  <div class="flex flex-col items-center gap-6 md:flex-row md:items-center">
+    <h2 class="text-center text-4xl font-bold text-white md:text-left">
+      <span class="relative inline-block">
+        <span class="relative z-10 drop-shadow-[2px_2px_0_#7836cf]">
+          Zertifikate &amp; Badges
+        </span>
+        <span
+          class="absolute inset-x-0 bottom-0 -z-10 h-2 translate-y-2 rounded-full bg-gradient-to-r from-[#7836cf] to-[#0debd8] opacity-80"
+        ></span>
+      </span>
+    </h2>
+
+    <span
+      class="hidden h-1.5 flex-1 rounded-lg bg-gradient-to-r from-[#7836cf] to-[#0debd8] drop-shadow-[2px_2px_0_#0debd8] md:block"
+    ></span>
+  </div>
+
+  <div class="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
+    {badges.map((badge) => (
+      <div
+        class="flex flex-col gap-4 rounded-2xl border border-violet-600/40 bg-slate-900/80 p-6 shadow-[0_0_25px_rgba(0,0,0,0.45)]"
+      >
+        <div class="flex items-center justify-center">
+          <div
+            data-iframe-width="150"
+            data-iframe-height="270"
+            data-share-badge-id={badge.id}
+            data-share-badge-host="https://www.credly.com"
+          ></div>
+        </div>
+
+        <div class="mt-2 flex flex-col gap-1">
+          <h3 class="text-lg font-semibold text-white drop-shadow-[1px_1px_0_#7836cf]">
+            {badge.title}
+          </h3>
+          <p class="text-sm text-slate-300">
+            {badge.issuer}
+          </p>
+          <p class="text-xs text-slate-400">
+            Ausgestellt am {badge.issued}
+          </p>
+          <p class="mt-2 text-sm text-slate-200">
+            {badge.description}
+          </p>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <script
+    type="text/javascript"
+    async
+    src="//cdn.credly.com/assets/utilities/embed.js"
+  ></script>
+</section>

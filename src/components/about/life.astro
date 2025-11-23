@@ -1,0 +1,109 @@
+---
+import "../../styles/life.css";
+
+const timeline = [
+  {
+    id: "volksschule",
+    period: "2013 – 2017",
+    title: "Volksschule",
+    description: "Schulstart und erste Berührung mit Technik und Computern.",
+    image: "/img-life/Volksschule.png",
+  },
+  {
+    id: "mittelschule",
+    period: "2017 – 2021",
+    title: "Mittelschule",
+    description: "Vertiefung in naturwissenschaftliche Fächer und erste IT-Interessen.",
+    image: "/img-life/NMS_Bruck.jpg",
+  },
+  {
+    id: "htl",
+    period: "seit 2021 – voraussichtlich 2026",
+    title: "HTL Informatik",
+    description: "Fokus auf Softwareentwicklung, Netzwerke, Datenbanken und Projektarbeit.",
+    image: "/img-life/HTL.jpg",
+  },
+  {
+    id: "praktikum1",
+    period: "Pflichtpraktikum 1",
+    title: "4-wöchiges Praktikum",
+    description: "Erste praktische Erfahrung im technischen Umfeld während der HTL-Zeit.",
+    image: "/img-life/Tauernklinikum.png",
+  },
+  {
+    id: "praktikum2",
+    period: "Pflichtpraktikum 2",
+    title: "4-wöchiges Praktikum",
+    description: "Vertiefung in Arbeitsabläufe, Zusammenarbeit im Team und reale Projekte.",
+    image: "/img-life/Tauernklinikum.png",
+  },
+];
+---
+
+<section class="life-section mx-auto mt-16 max-w-6xl px-4">
+  <h2 class="life-heading">
+    <span class="title-main">Meine Laufbahn</span>
+    <span class="title-line"></span>
+  </h2>
+
+  <div class="life-timeline">
+    {
+      timeline.map((item, index) => {
+        const left = index % 2 === 0;
+
+        return (
+          <div class="life-row" data-side={left ? "left" : "right"}>
+            <!-- LEFT COLUMN -->
+            <div class="life-col">
+              {
+                left ? (
+                  <div class="life-block">
+                    <p class="life-period">{item.period}</p>
+                    <div class="life-card">
+                      <h3 class="life-card-title">{item.title}</h3>
+                      <p class="life-card-text">{item.description}</p>
+                    </div>
+                  </div>
+                ) : (
+                  <div class="life-image">
+                    <img src={item.image} alt={item.title} loading="lazy" />
+                  </div>
+                )
+              }
+            </div>
+
+            <!-- CENTER LINE + DOT -->
+            <div class="life-center">
+              <div class="life-dot"></div>
+            </div>
+
+            <!-- RIGHT COLUMN -->
+            <div class="life-col">
+              {
+                left ? (
+                  <div class="life-image">
+                    <img src={item.image} alt={item.title} loading="lazy" />
+                  </div>
+                ) : (
+                  <div class="life-block">
+                    <p class="life-period">{item.period}</p>
+                    <div class="life-card">
+                      <h3 class="life-card-title">{item.title}</h3>
+                      <p class="life-card-text">{item.description}</p>
+                    </div>
+                  </div>
+                )
+              }
+            </div>
+          </div>
+        );
+      })
+    }
+  </div>
+
+  <div class="life-download">
+    <a href="/Lebenslauf.pdf" download class="life-download-btn">
+      Lebenslauf herunterladen
+    </a>
+  </div>
+</section>

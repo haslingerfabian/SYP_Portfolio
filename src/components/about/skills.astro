@@ -1,43 +1,88 @@
-<section class="site-container mt-14 mx-auto max-w-6xl px-4">
-  <div class="site-container mt-14">
-    <h2
-      class="text-4xl font-bold flex flex-col items-center gap-6 text-center whitespace-nowrap text-white md:flex-row md:items-center md:text-start"
-    >
-      <span class="drop-shadow-[2px_2px_0_#7836cf]">Tecnologias</span>
-      <span
-        class="hidden h-1.5 grow rounded-lg drop-shadow-[2px_2px_0_#0debd8] bg-[#7836cf] md:block"
-      ></span>
-    </h2>
-  </div>
-  <div class="mt-10 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
-    {
-      [
-        { name: "HTML", icon: "html5" },
-        { name: "CSS", icon: "css3" },
-        { name: "JavaScript", icon: "javascript" },
-        { name: "TypeScript", icon: "typescript" },
-        { name: "Python", icon: "python" },
-        { name: "React", icon: "react" },
-        { name: "Astro", icon: "astro" },
-        { name: "Next.js", icon: "nextjs" },
-        { name: "Tailwind", icon: "tailwindcss" },
-        { name: "Node.js", icon: "nodejs" },
-        { name: "Express", icon: "express" },
-        { name: "Git", icon: "git" },
-      ].map((skill) => (
-        <div class="relative group">
-          <div class="absolute inset-0 -z-10 rounded-lg  blur-3xl opacity-0 transition-opacity group-hover:opacity-100" />
+---
+const skills = [
+  { name: "HTML", icon: "html5", level: 4.5 },
+  { name: "CSS", icon: "css3", level: 4 },
+  { name: "JavaScript", icon: "javascript", level: 4 },
+  { name: "TypeScript", icon: "typescript", level: 3.5 },
+  { name: "Python", icon: "python", level: 3 },
+  { name: "React", icon: "react", level: 3.5 },
+  { name: "Astro", icon: "astro", level: 4 },
+  { name: "Next.js", icon: "nextjs", level: 3 },
+  { name: "Tailwind", icon: "tailwindcss", level: 4 },
+  { name: "Node.js", icon: "nodejs", level: 3 },
+  { name: "Express", icon: "express", level: 2.5 },
+  { name: "Git", icon: "git", level: 4 },
+];
 
-          <div class="flex flex-col items-center bg-gray-900 p-4 drop-shadow-[4px_4px_0_#7836cf] rounded-lg shadow-md transition-transform hover:scale-105">
+function getDeviconUrl(icon: string) {
+  return `https://cdn.jsdelivr.net/gh/devicons/devicon/icons/${icon}/${icon}-original.svg`;
+}
+
+function renderStars(level: number) {
+  const stars: string[] = [];
+  for (let i = 1; i <= 5; i++) {
+    if (level >= i) stars.push("★");
+    else if (level >= i - 0.5) stars.push("⯨");
+    else stars.push("☆");
+  }
+  return stars.join("");
+}
+---
+
+<section class="site-container mx-auto mt-16 max-w-6xl px-4">
+  <div class="flex flex-col items-center gap-6 md:flex-row md:items-center">
+    <h2 class="text-center text-4xl font-bold text-white md:text-left">
+      <span class="relative inline-block">
+        <span class="relative z-10 drop-shadow-[2px_2px_0_#7836cf]">
+          Technologien
+        </span>
+        <span
+          class="absolute inset-x-0 bottom-0 -z-10 h-2 translate-y-2 rounded-full bg-gradient-to-r from-[#7836cf] to-[#0debd8] opacity-80"
+        ></span>
+      </span>
+    </h2>
+    <span
+      class="hidden h-1.5 flex-1 rounded-lg bg-gradient-to-r from-[#7836cf] to-[#0debd8] drop-shadow-[2px_2px_0_#0debd8] md:block"
+    ></span>
+  </div>
+
+  <div class="mt-10 grid gap-6 grid-cols-2 sm:grid-cols-3 md:grid-cols-4">
+    {skills.map((skill) => (
+      <div class="group relative">
+        <div
+          class="absolute inset-0 -z-10 rounded-2xl bg-gradient-to-br from-[#7836cf]/40 via-transparent to-[#0debd8]/40 opacity-0 blur-2xl transition-opacity duration-300 group-hover:opacity-100"
+        ></div>
+
+        <div
+          class="flex h-full flex-col items-center gap-3 rounded-2xl border border-violet-600/40 bg-slate-900/80 p-5 shadow-[0_0_25px_rgba(0,0,0,0.55)] transition-transform duration-200 group-hover:-translate-y-1 group-hover:border-cyan-400/80 group-hover:bg-slate-900"
+        >
+          <div
+            class="flex h-16 w-16 items-center justify-center rounded-xl bg-slate-800/90"
+          >
             <img
-              src={`https://cdn.jsdelivr.net/gh/devicons/devicon/icons/${skill.icon}/${skill.icon}-original.svg`}
+              src={getDeviconUrl(skill.icon)}
               alt={skill.name}
-              class="w-12 h-12"
+              class="h-10 w-10"
+              loading="lazy"
             />
-            <p class="mt-2 text-white text-lg font-semibold drop-shadow-[1px_1px_0_#7836cf]">{skill.name}</p>
+          </div>
+
+          <p
+            class="mt-1 text-center text-base font-semibold tracking-wide text-white drop-shadow-[1px_1px_0_#7836cf]"
+          >
+            {skill.name}
+          </p>
+
+          <div class="mt-1 flex flex-col items-center gap-1">
+            <p class="text-xl leading-none text-amber-400">
+              {renderStars(skill.level)}
+            </p>
+            <p class="text-xs text-slate-300">
+              {skill.level.toFixed(1).replace(".", ",")} / 5
+            </p>
           </div>
         </div>
-      ))
-    }
+      </div>
+    ))}
   </div>
 </section>

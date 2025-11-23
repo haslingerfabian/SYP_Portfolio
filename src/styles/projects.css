@@ -16,7 +16,6 @@
   }
 }
 
-/* Animación para las cards */
 .project-visible {
   opacity: 1;
   transform: translateY(0) scale(1);
@@ -31,15 +30,29 @@
   pointer-events: none;
 }
 
-/* Botones de filtrado no activos */
 .filter-btn {
   opacity: 0.4;
   transition: 0.18s ease;
 }
 
-/* Botón activo */
 .filter-btn.active {
   transform: scale(1.05);
   opacity: 1;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+}
+
+.projects-heading {
+  width: 100%;
+  padding-top: 5rem;
+  padding-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.projects-title {
+  font-size: 3rem;
+  font-weight: 800;
+  color: #e2e8f0;
+  text-shadow: 0 0 12px rgba(0, 255, 255, 0.4);
+  letter-spacing: 1px;
 }

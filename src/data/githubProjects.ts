@@ -1,4 +1,8 @@
-type Project = {
+// =============================
+// Types
+// =============================
+
+export type Project = {
   title: string;
   description: string;
   image?: string;
@@ -7,12 +11,15 @@ type Project = {
   isCollab: boolean;
 };
 
+// =============================
+// Manuelle Collab-Projekte
+// =============================
 
 const COLLAB_PROJECTS: Project[] = [
   {
     title: "SYP4_MBOT_G1",
     description: "Robotik-Projekt mit MBot im Team.",
-    image: "/img-projects/SYP4_MBOT_G1.jpg", 
+    image: "/img-projects/SYP4_MBOT_G1.jpg",
     technologies: ["C#", "Robotik"],
     code: "https://github.com/jonasaberger/SYP4_MBOT_G1",
     isCollab: true,
@@ -20,6 +27,10 @@ const COLLAB_PROJECTS: Project[] = [
 ];
 
 const COLLAB_TITLES = new Set(COLLAB_PROJECTS.map((p) => p.title));
+
+// =============================
+// Helper: Sprache(n) eines Repos holen
+// =============================
 
 async function fetchLanguages(
   repoUrl: string,
@@ -29,11 +40,24 @@ async function fetchLanguages(
     const res = await fetch(`${repoUrl}/languages`, { headers });
     if (!res.ok) return [];
     const langs = await res.json();
-    return Object.keys(langs).slice(0, 3);
+    return Object.keys(langs).slice(0, 3); // Max. 3 Technologien
   } catch {
     return [];
   }
 }
+
+// =============================
+// Helper: Description kürzen
+// =============================
+
+function shortenDescription(text: string | null, max = 140): string {
+  const raw = text ?? "No description provided.";
+  return raw.length > max ? raw.substring(0, max - 3) + "..." : raw;
+}
+
+// =============================
+// Hauptfunktion: GitHub Projekte laden
+// =============================
 
 export async function fetchGitHubProjects(): Promise<Project[]> {
   const username = import.meta.env.GITHUB_USERNAME;
@@ -42,6 +66,7 @@ export async function fetchGitHubProjects(): Promise<Project[]> {
   const headers: Record<string, string> = {
     Accept: "application/vnd.github+json",
   };
+
   if (token) {
     headers.Authorization = `Bearer ${token}`;
   }
@@ -50,6 +75,7 @@ export async function fetchGitHubProjects(): Promise<Project[]> {
   const perPage = 100;
   let page = 1;
 
+  // ========= GitHub-Repos laden ==========
   while (true) {
     const res = await fetch(
       `https://api.github.com/users/${username}/repos?per_page=${perPage}&page=${page}&type=owner&sort=updated`,
@@ -63,21 +89,23 @@ export async function fetchGitHubProjects(): Promise<Project[]> {
 
     for (const repo of data) {
       if (repo.private) continue;
+      if (COLLAB_TITLES.has(repo.name)) continue; // collab wird separat behandelt
 
-      if (COLLAB_TITLES.has(repo.name)) continue;
-
+      // Technologien
       const technologies = await fetchLanguages(repo.url, headers);
       if (!technologies.length && repo.language) {
         technologies.push(repo.language);
       }
 
-      // Bildpfad für normale Repos:
-      // -> Datei muss in public/img-projects/<RepoName>.jpg liegen
+      // Bildpfad (muss im public/img-projects/ vorhanden sein)
       const image = `/img-projects/${repo.name}.jpg`;
+
+      // Beschreibung kürzen
+      const description = shortenDescription(repo.description);
 
       projects.push({
         title: repo.name,
-        description: repo.description ?? "No description provided.",
+        description,
         image,
         technologies,
         code: repo.html_url,
@@ -87,12 +115,16 @@ export async function fetchGitHubProjects(): Promise<Project[]> {
 
     if (data.length < perPage) break;
     page++;
-    if (page > 5) break;
+    if (page > 5) break; // Hardlimit
   }
 
-  // Collab-Projekte anhängen
+  // ========= Collab-Projekte hinzufügen ==========
   for (const c of COLLAB_PROJECTS) {
-    projects.push(c);
+    projects.push({
+      ...c,
+      description: shortenDescription(c.description),
+      isCollab: true,
+    });
   }
 
   return projects;

@@ -2,29 +2,74 @@
 import GithubIcon from "../../../assets/img-projects/github.png";
 ---
 
-<nav class="fixed top-0 left-0 w-full z-50 bg-gray-950/60 backdrop-blur-md border-b border-white/10">
-  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+<nav class="fixed top-0 left-0 w-full z-50 bg-gray-950/70 backdrop-blur-md border-b border-white/10">
+  <!-- Toggle muss auf derselben Ebene wie das Mobile-Menü liegen -->
+  <input id="nav-toggle" type="checkbox" class="peer hidden" />
+
+  <!-- Oberer Balken -->
+  <div class="max-w-7xl mx-auto px-5 h-16 flex items-center justify-between">
 
     <!-- Logo -->
-    <a href="/" class="text-[#69c7c7] text-2xl font-bold drop-shadow-[1.5px_1.5px_0_#7836cf]">
+    <a
+      href="/"
+      class="text-[#69c7c7] text-2xl font-bold drop-shadow-[1.5px_1.5px_0_#7836cf]"
+    >
       Fabian Haslinger
     </a>
 
-    <!-- Links -->
-    <div class="flex items-center space-x-8">
-      <a href="/" class="text-white hover:text-[#7d2dac] font-semibold transition">Home</a>
-      <a href="/projects" class="text-white hover:text-[#7d2dac] font-semibold transition">Projekte</a>
-      <a href="/about" class="text-white hover:text-[#7d2dac] font-semibold transition">Über mich</a>
-      <a href="/contact" class="text-white hover:text-[#7d2dac] font-semibold transition">Kontakt</a>
+    <!-- Desktop-Navigation -->
+    <div class="hidden md:flex items-center gap-10 text-base font-semibold">
+      <a href="/" class="hover:text-[#7d2dac] transition">Home</a>
+      <a href="/projects" class="hover:text-[#7d2dac] transition">Projekte</a>
+      <a href="/about" class="hover:text-[#7d2dac] transition">Über mich</a>
+      <a href="/contact" class="hover:text-[#7d2dac] transition">Kontakt</a>
 
-      <!-- GitHub Icon -->
-      <a href="https://github.com/haslingerFabian" target="_blank" aria-label="GitHub">
+      <a
+        href="https://github.com/haslingerFabian"
+        target="_blank"
+        aria-label="GitHub"
+      >
+        <img
+          src={GithubIcon.src}
+          alt="GitHub"
+          class="w-8 h-8 opacity-80 hover:opacity-100 transition"
+        />
+      </a>
+    </div>
+
+    <!-- Mobile: GitHub + Burger -->
+    <div class="flex items-center gap-4 md:hidden">
+      <a
+        href="https://github.com/haslingerFabian"
+        target="_blank"
+        aria-label="GitHub"
+      >
         <img
           src={GithubIcon.src}
           alt="GitHub"
           class="w-7 h-7 opacity-80 hover:opacity-100 transition"
         />
       </a>
+
+      <label
+        for="nav-toggle"
+        class="flex flex-col gap-[4px] cursor-pointer"
+        aria-label="Navigation öffnen"
+      >
+        <span class="w-6 h-[2px] bg-white"></span>
+        <span class="w-6 h-[2px] bg-white"></span>
+        <span class="w-6 h-[2px] bg-white"></span>
+      </label>
+    </div>
+  </div>
+
+  <!-- Mobile-Menü: reagiert auf peer-checked -->
+  <div class="hidden peer-checked:block md:hidden bg-gray-950 border-t border-white/10">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col gap-3 text-sm font-medium">
+      <a href="/" class="hover:text-[#7d2dac] transition">Home</a>
+      <a href="/projects" class="hover:text-[#7d2dac] transition">Projekte</a>
+      <a href="/about" class="hover:text-[#7d2dac] transition">Über mich</a>
+      <a href="/contact" class="hover:text-[#7d2dac] transition">Kontakt</a>
     </div>
   </div>
 </nav>
