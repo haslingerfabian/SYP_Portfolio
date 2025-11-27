@@ -1,7 +1,3 @@
-// =============================
-// Types
-// =============================
-
 export type Project = {
   title: string;
   description: string;
@@ -11,11 +7,7 @@ export type Project = {
   isCollab: boolean;
 };
 
-// =============================
-// Manuelle Collab-Projekte
-// =============================
-
-const COLLAB_PROJECTS: Project[] = [
+const STATIC_PROJECTS: Project[] = [
   {
     title: "SYP4_MBOT_G1",
     description: "Robotik-Projekt mit MBot im Team.",
@@ -26,49 +18,38 @@ const COLLAB_PROJECTS: Project[] = [
   },
   {
     title: "EscapeThe2DBackrooms",
-    description: "2D-Dungeon Game in Unity. Vorlage für das Design sind die Backrooms. Hier geht es zum Spiel: https://et3rnityraiden.itch.io/escape-the-2d-backrooms",
+    description:
+      "2D-Dungeon Game in Unity. Vorlage für das Design sind die Backrooms. Hier geht es zum Spiel: https://et3rnityraiden.itch.io/escape-the-2d-backrooms",
     image: "/img-projects/EscapeThe2DBackrooms.jpg",
     technologies: ["C#", "Unity"],
     code: "https://github.com/haslingerfabian/EscapeThe2DBackrooms",
     isCollab: false,
-  }
+  },
 ];
 
-const COLLAB_TITLES = new Set(COLLAB_PROJECTS.map((p) => p.title));
-
-// =============================
-// Helper: Sprache(n) eines Repos holen
-// =============================
+const STATIC_TITLES = new Set(STATIC_PROJECTS.map((p) => p.title));
 
 async function fetchLanguages(
-  repoUrl: string,
+  languagesUrl: string,
   headers: Record<string, string>
 ): Promise<string[]> {
   try {
-    const res = await fetch(`${repoUrl}/languages`, { headers });
+    const res = await fetch(languagesUrl, { headers });
     if (!res.ok) return [];
     const langs = await res.json();
-    return Object.keys(langs).slice(0, 3); // Max. 3 Technologien
+    return Object.keys(langs).slice(0, 3);
   } catch {
     return [];
   }
 }
 
-// =============================
-// Helper: Description kürzen
-// =============================
-
-function shortenDescription(text: string | null, max = 250): string {
+function shortenDescription(text: string | null | undefined, max = 250): string {
   const raw = text ?? "No description provided.";
   return raw.length > max ? raw.substring(0, max - 3) + "..." : raw;
 }
 
-// =============================
-// Hauptfunktion: GitHub Projekte laden
-// =============================
-
 export async function fetchGitHubProjects(): Promise<Project[]> {
-  const username = import.meta.env.GITHUB_USERNAME;
+  const username = "haslingerfabian";
   const token = import.meta.env.GITHUB_TOKEN;
 
   const headers: Record<string, string> = {
@@ -79,39 +60,49 @@ export async function fetchGitHubProjects(): Promise<Project[]> {
     headers.Authorization = `Bearer ${token}`;
   }
 
-  const projects: Project[] = [];
-  const perPage = 100;
-  let page = 1;
-
-  // ========= GitHub-Repos laden ==========
-  while (true) {
+  try {
     const res = await fetch(
-      `https://api.github.com/users/${username}/repos?per_page=${perPage}&page=${page}&type=owner&sort=updated`,
+      `https://api.github.com/users/${username}/repos?per_page=100&type=owner&sort=updated`,
       { headers }
     );
 
-    if (!res.ok) break;
+    if (!res.ok) {
+      const normalizedStatic = STATIC_PROJECTS.map((p) => ({
+        ...p,
+        description: shortenDescription(p.description),
+      }));
+      return normalizedStatic;
+    }
 
     const data = await res.json();
-    if (!Array.isArray(data) || data.length === 0) break;
+    if (!Array.isArray(data)) {
+      const normalizedStatic = STATIC_PROJECTS.map((p) => ({
+        ...p,
+        description: shortenDescription(p.description),
+      }));
+      return normalizedStatic;
+    }
+
+    const githubProjects: Project[] = [];
 
     for (const repo of data) {
       if (repo.private) continue;
-      if (COLLAB_TITLES.has(repo.name)) continue; // collab wird separat behandelt
+      if (repo.fork) continue;
+      if (STATIC_TITLES.has(repo.name)) continue;
 
-      // Technologien
-      const technologies = await fetchLanguages(repo.url, headers);
+      const technologies = await fetchLanguages(
+        repo.languages_url,
+        headers
+      );
+
       if (!technologies.length && repo.language) {
         technologies.push(repo.language);
       }
 
-      // Bildpfad (muss im public/img-projects/ vorhanden sein)
       const image = `/img-projects/${repo.name}.jpg`;
-
-      // Beschreibung kürzen
       const description = shortenDescription(repo.description);
 
-      projects.push({
+      githubProjects.push({
         title: repo.name,
         description,
         image,
@@ -121,19 +112,17 @@ export async function fetchGitHubProjects(): Promise<Project[]> {
       });
     }
 
-    if (data.length < perPage) break;
-    page++;
-    if (page > 5) break; // Hardlimit
-  }
+    const normalizedStatic = STATIC_PROJECTS.map((p) => ({
+      ...p,
+      description: shortenDescription(p.description),
+    }));
 
-  // ========= Collab-Projekte hinzufügen ==========
-  for (const c of COLLAB_PROJECTS) {
-    projects.push({
-      ...c,
-      description: shortenDescription(c.description),
-      isCollab: true,
-    });
+    return [...githubProjects, ...normalizedStatic];
+  } catch {
+    const normalizedStatic = STATIC_PROJECTS.map((p) => ({
+      ...p,
+      description: shortenDescription(p.description),
+    }));
+    return normalizedStatic;
   }
-
-  return projects;
 }
