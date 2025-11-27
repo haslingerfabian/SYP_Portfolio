@@ -24,6 +24,14 @@ const COLLAB_PROJECTS: Project[] = [
     code: "https://github.com/jonasaberger/SYP4_MBOT_G1",
     isCollab: true,
   },
+  {
+    title: "EscapeThe2DBackrooms",
+    description: "2D-Dungeon Game in Unity. Vorlage für das Design sind die Backrooms. Hier geht es zum Spiel: https://et3rnityraiden.itch.io/escape-the-2d-backrooms",
+    image: "/img-projects/EscapeThe2DBackrooms.jpg",
+    technologies: ["C#", "Unity"],
+    code: "https://github.com/haslingerfabian/EscapeThe2DBackrooms",
+    isCollab: false,
+  }
 ];
 
 const COLLAB_TITLES = new Set(COLLAB_PROJECTS.map((p) => p.title));
@@ -50,7 +58,7 @@ async function fetchLanguages(
 // Helper: Description kürzen
 // =============================
 
-function shortenDescription(text: string | null, max = 140): string {
+function shortenDescription(text: string | null, max = 250): string {
   const raw = text ?? "No description provided.";
   return raw.length > max ? raw.substring(0, max - 3) + "..." : raw;
 }
