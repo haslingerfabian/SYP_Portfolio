@@ -1,0 +1,1 @@
+Moderne Portfolio-Website mit Astro und Tailwind. Zeigt meine Projekte, Skills und Zertifikate. Fokus auf sauberes Design, schnelle Performance und klar strukturierte Inhalte. Komplett responsive und leicht erweiterbar.
