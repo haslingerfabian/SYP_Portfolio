@@ -10,10 +10,8 @@ const github = "https://github.com/haslingerfabian";
   <section
     class="relative flex min-h-screen flex-col items-center justify-center bg-gray-900 px-6 text-white overflow-hidden"
   >
-    <!-- animierter Hintergrund -->
     <div class="contact-bg absolute inset-0 -z-10"></div>
 
-    <!-- größere, sichtbare Glows -->
     <div
       class="pointer-events-none absolute -left-40 top-10 h-80 w-80 rounded-full bg-[#0debd8]/30 blur-3xl glow-float-1"
       aria-hidden="true"
@@ -29,7 +27,6 @@ const github = "https://github.com/haslingerfabian";
       aria-hidden="true"
     ></div>
 
-    <!-- Inhalt -->
     <div class="relative z-10 flex flex-col items-center">
       <div class="mt-20 mb-6 flex flex-col items-center">
         <img
@@ -68,7 +65,6 @@ const github = "https://github.com/haslingerfabian";
   </section>
 
   <style>
-    /* animierter, leicht „techy“ Hintergrund */
     .contact-bg {
       background-image:
         radial-gradient(circle at 0 0, #0debd811 0, transparent 55%),
@@ -96,7 +92,6 @@ const github = "https://github.com/haslingerfabian";
       }
     }
 
-    /* Glows bewegen sich langsam gegeneinander */
     @keyframes glow-float-1 {
       0% {
         transform: translate3d(0, 0, 0);
@@ -129,7 +124,6 @@ const github = "https://github.com/haslingerfabian";
       animation: glow-float-2 28s ease-in-out infinite;
     }
 
-    /* Ring pulsiert leicht */
     @keyframes glow-ring-pulse {
       0%,
       100% {
