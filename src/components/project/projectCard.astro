@@ -1,6 +1,15 @@
 ---
 import GithubIcon from "../../assets/img-projects/github.png";
 
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  technologies?: string[];
+  code: string;
+  isCollab?: boolean;
+}
+
 const {
   title,
   description,
@@ -8,9 +17,9 @@ const {
   technologies = [],
   code,
   isCollab = false,
-} = Astro.props;
+}: Props = Astro.props;
 
-const TECH_STYLES = {
+const TECH_STYLES: Record<string, string> = {
   Astro: "border-purple-400/60 text-purple-300",
   JavaScript: "border-yellow-400/60 text-yellow-300",
   TypeScript: "border-blue-400/60 text-blue-300",
@@ -20,7 +29,7 @@ const TECH_STYLES = {
   Java: "border-orange-400/60 text-orange-300",
 };
 
-function getTechClasses(tech) {
+function getTechClasses(tech: string) {
   return TECH_STYLES[tech] ?? "border-white/40 text-white/80";
 }
 ---

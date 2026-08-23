@@ -25,6 +25,15 @@ const STATIC_PROJECTS: Project[] = [
     code: "https://github.com/haslingerfabian/EscapeThe2DBackrooms",
     isCollab: false,
   },
+  {
+  title: "PV-Ertragssteuerung",
+  description:
+      "Diplomarbeit: Entwicklung einer mobile Applikation zur Verwaltung und Steuerung einer PV-Anlage.",
+  image: "/svg/github.png",
+  technologies: ["React Native", "Expo", "TypeScript", "React Nativa Skia", "Victory Native", "Python", "Flask", "Docker", "InfluxDB", "Raspberry Pi", "REST API"],
+  code: "https://github.com/jonasaberger/DIPL_Ertragssteuerung_PV",
+  isCollab: true,
+  },
 ];
 
 const STATIC_TITLES = new Set(STATIC_PROJECTS.map((p) => p.title));
